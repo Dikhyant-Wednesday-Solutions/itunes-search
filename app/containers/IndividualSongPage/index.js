@@ -4,12 +4,31 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
 import { createStructuredSelector } from 'reselect';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Card, Divider, CardHeader } from '@mui/material';
+import styled from '@emotion/styled';
+import { bool, shape, number, array, string, func } from 'prop-types';
 import { If } from '@components/If';
+import { translate } from '@app/utils';
 import { selectLoading, selectSongData, selectSongError, selectSongId } from './selectors';
 import { individualSongPageCreators } from './reducer';
 import individualSongPageSaga from './saga';
-import { bool, shape, number, array, string, func } from 'prop-types';
+import T from '@components/T';
+
+const CustomCard = styled(Card)`
+  && {
+    margin: 1.25rem 0;
+    padding: 1rem;
+    max-width: ${(props) => props.maxwidth};
+    color: ${(props) => props.color};
+    ${(props) => props.color && `color: ${props.color}`};
+  }
+`;
+
+const CustomCardHeader = styled(CardHeader)`
+  && {
+    padding: 0;
+  }
+`;
 
 /**
  * IndividualSongPage component is responsible for displaying individual song data
@@ -46,13 +65,32 @@ export function IndividualSongPage({
     <>
       <If
         condition={songDataFromPreviousPage !== undefined}
-        otherwise={<If condition={songData && songData?.results}>{renderSongInfo(loading, songData?.results[0])}</If>}
+        otherwise={
+          <If condition={songData && songData?.results?.length >= 0}>
+            {renderSongInfo(loading, songData?.results?.[0])}
+          </If>
+        }
       >
         {renderSongInfo(false, songDataFromPreviousPage)}
       </If>
+      {renderErrorState(loading, songError)}
     </>
   );
 }
+
+const renderErrorState = (loading, songsError) => {
+  const error = songsError;
+  const messageId = 'error-message';
+  return (
+    <If condition={!loading && error}>
+      <CustomCard color={'red'}>
+        <CustomCardHeader title={translate('oops')} />
+        <Divider sx={{ mb: 1.25 }} light />
+        <T data-testid={messageId} id={error} text={error} />
+      </CustomCard>
+    </If>
+  );
+};
 
 const renderSkeleton = () => {
   return (
