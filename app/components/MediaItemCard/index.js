@@ -36,24 +36,24 @@ const Card = styled.div`
  */
 export function MediaItemCard({ trackName, collectionName, artistName, country, primaryGenreName, thumbnailSrc }) {
   return (
-    <Card>
-      <If condition={thumbnailSrc}>
+    <Card data-testid="media-item-card">
+      <If condition={thumbnailSrc !== undefined}>
         <img src={thumbnailSrc} alt="thumbnail" />
       </If>
-      <If condition={trackName}>
-        <div>{trackName}</div>
+      <If condition={trackName !== undefined}>
+        <div data-testid="track_name">{trackName}</div>
       </If>
-      <If condition={collectionName}>
-        <div>{collectionName}</div>
+      <If condition={collectionName !== undefined}>
+        <div data-testid="collection_name">{collectionName}</div>
       </If>
-      <If condition={artistName}>
-        <div>{artistName}</div>
+      <If condition={artistName !== undefined}>
+        <div data-testid="artist_name">{artistName}</div>
       </If>
-      <If condition={country}>
-        <div>{country}</div>
+      <If condition={country !== undefined}>
+        <div data-testid="country">{country}</div>
       </If>
-      <If condition={primaryGenreName}>
-        <div>{primaryGenreName}</div>
+      <If condition={primaryGenreName !== undefined}>
+        <div data-testid="primary_genre_name">{primaryGenreName}</div>
       </If>
     </Card>
   );

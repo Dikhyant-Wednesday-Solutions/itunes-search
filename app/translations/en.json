@@ -16,5 +16,9 @@
   "stories": "Go to Storybook",
   "wednesday_solutions": "Wednesday Solutions",
   "default_template": "wednesday-solutions/react-template",
-  "songs_search_input_placeholder": "Please enter a song name"
+  "songs_search_input_placeholder": "Please enter a song name",
+  "media_list": "Media List",
+  "songs_search_default": "Search for a song by entering it's name in the search box",
+  "oops": "Oops !",
+  "song_not_found": "Sorry ! Looks like the song you wanna look for wasn't found"
 }

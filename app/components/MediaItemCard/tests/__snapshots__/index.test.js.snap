@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MediaItemCard /> should render and match the snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="css-1ljz9sh e1f5w7bs0"
+      data-testid="media-item-card"
+    />
+  </div>
+</body>
+`;
