@@ -12,6 +12,17 @@ describe('SongsContainer reducer tests', () => {
         expect(individualSongPageReducer(undefined, {})).toEqual(state);
     });
 
+    it('should return initial state when REQUEST_GET_ITUNE_SONG action is dispatched', () => {
+      const songId = "1440833081";
+      const expectedState = { ...initialState, songId,loading: true };
+      expect(
+        individualSongPageReducer(initialState,{
+          type: individualSongPageTypes.REQUEST_GET_ITUNE_SONG,
+          songId
+        })
+      ).toEqual(expectedState);
+    })
+
     it('should ensure that the user data is present and loading = false when SUCCESS_GET_ITUNE_SONG is dispatched', () => {
         const data = songData;
         const expectedResult = { ...state, songData: data, loading: false };
