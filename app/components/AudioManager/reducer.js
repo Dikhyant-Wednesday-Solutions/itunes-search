@@ -9,7 +9,8 @@ import { createActions } from 'reduxsauce';
 export const { Types: audioManagerTypes, Creators: audioManagerCreators } = createActions({
   play: {},
   pause: {},
-  playNew: ['src']
+  playNew: ['src'],
+  reset: {}
 });
 
 export const audioState = {
@@ -33,6 +34,10 @@ export const audioManagerReducer = (state = initialState, action) =>
       case audioManagerTypes.PLAY_NEW:
         draft.audioState = audioState.PLAYING;
         draft.src = action.src;
+        break;
+      case audioManagerTypes.RESET:
+        draft.audioState = audioState.NO_SONG;
+        draft.src = null;
         break;
       default:
     }

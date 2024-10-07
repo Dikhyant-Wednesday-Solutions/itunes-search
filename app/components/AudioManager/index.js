@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { audioState } from './reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { audioManagerTypes, audioState } from './reducer';
 
 /**
  * AudioManager component is responsible for playing and pausing audio
@@ -10,6 +10,13 @@ import { audioState } from './reducer';
 export function AudioManager() {
   const audioRef = useRef(null);
   const { src, audioState: audSt } = useSelector((state) => state.audioManager);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: audioManagerTypes.RESET
+    });
+  }, []);
   useEffect(() => {
     if (!audioRef.current) {
       return;
