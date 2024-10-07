@@ -1,4 +1,4 @@
-import { selectSongName, selectSongsContainerDomain, selectSongsData, selectSongsError } from '../selectors';
+import { selectLoading, selectSongName, selectSongsContainerDomain, selectSongsData, selectSongsError } from '../selectors';
 import { initialState } from '../reducer';
 import songData from './song.data.json';
 
@@ -7,6 +7,7 @@ describe('SongsContainer selector tests', () => {
   let songName;
   let songsData;
   let songsError;
+  let loading = false;
 
   beforeEach(() => {
     songName = 'International Love';
@@ -17,7 +18,8 @@ describe('SongsContainer selector tests', () => {
       songsContainer: {
         songName: songName,
         songsData: songsData,
-        songsError: songsError
+        songsError: songsError,
+        loading
       }
     };
   });
@@ -34,6 +36,11 @@ describe('SongsContainer selector tests', () => {
   it('should select the songsError', () => {
     const songsErrorSelector = selectSongsError();
     expect(songsErrorSelector(mockedState)).toEqual(songsError);
+  });
+
+  it('should select loading', () => {
+    const loadingSelector = selectLoading();
+    expect(loadingSelector(mockedState)).toEqual(loading);
   });
 
   it('should select the global state', () => {
