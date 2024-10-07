@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import { initialState } from './reducer';
+import { useSelector } from 'react-redux';
 
 /**
  * Direct selector to the audioManager state domain
@@ -20,3 +21,5 @@ export const selectSrc = () => createSelector(selectAudioManagerDomain, (substat
 
 export const selectAudioState = () =>
   createSelector(selectAudioManagerDomain, (substate) => get(substate, 'audioState'));
+
+export const useAudioManagerSelector = () => useSelector((state) => state.audioManager);

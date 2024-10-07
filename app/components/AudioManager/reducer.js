@@ -4,6 +4,7 @@
  *
  */
 import { produce } from 'immer';
+import { useDispatch } from 'react-redux';
 import { createActions } from 'reduxsauce';
 
 export const { Types: audioManagerTypes, Creators: audioManagerCreators } = createActions({
@@ -44,3 +45,13 @@ export const audioManagerReducer = (state = initialState, action) =>
   });
 
 export default audioManagerReducer;
+
+export const useAudioManagerDispatch = () => {
+  const dispatch = useDispatch();
+  return {
+    dispatchAudioReset: () =>
+      dispatch({
+        type: audioManagerTypes.RESET
+      })
+  };
+};
