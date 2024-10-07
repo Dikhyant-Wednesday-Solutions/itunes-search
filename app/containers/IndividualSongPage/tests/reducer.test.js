@@ -1,4 +1,4 @@
-import songsContainerReducer, { individualSongPageReducer, individualSongPageTypes, initialState, songsContainerTypes } from "../reducer";
+import { individualSongPageReducer, individualSongPageTypes, initialState } from "../reducer";
 import songData from './song.data.json';
 
 /* eslint-disable default-case, no-param-reassign */

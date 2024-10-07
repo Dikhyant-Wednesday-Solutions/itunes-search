@@ -55,9 +55,8 @@ export function IndividualSongPage({
   const { id } = useParams();
   const { state } = useLocation();
   const songDataFromPreviousPage = state?.songData;
-  // const {trackName, collectionName, artistName, country, primaryGenreName, artworkUrl100: thumbnailSrc} = state;
   useEffect(() => {
-    if (songDataFromPreviousPage === undefined) {
+    if (songDataFromPreviousPage === undefined && id && dispatchRequestGetItuneSong) {
       dispatchRequestGetItuneSong(id);
     }
   }, [id, songDataFromPreviousPage]);
@@ -65,11 +64,7 @@ export function IndividualSongPage({
     <>
       <If
         condition={songDataFromPreviousPage !== undefined}
-        otherwise={
-          <If condition={songData && songData?.results?.length >= 0}>
-            {renderSongInfo(loading, songData?.results?.[0])}
-          </If>
-        }
+        otherwise={renderSongInfo(loading, songData?.results?.[0])}
       >
         {renderSongInfo(false, songDataFromPreviousPage)}
       </If>
