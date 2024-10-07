@@ -12,6 +12,18 @@ describe('SongsContainer reducer tests', () => {
         expect(songsContainerReducer(undefined, {})).toEqual(state);
     });
 
+    it('should return initial state when REQUEST_GET_ITUNE_SONGS action is dispatched', () => {
+      const songName = 'Stairway to heaven';
+      const action = {
+        type: songsContainerTypes.REQUEST_GET_ITUNE_SONGS,
+        songName: songName
+      }
+      const expectedResult = {...state, songName, loading: true};
+      expect(
+        songsContainerReducer(state,action)
+      ).toEqual(expectedResult);
+    })
+
     it('should ensure that the user data is present and loading = false when SUCCESS_GET_ITUNE_SONGS is dispatched', () => {
         const data = songData;
         const expectedResult = { ...state, songsData: data, loading: false };
