@@ -1,11 +1,12 @@
 import React from 'react';
 import Router from "react-router-dom";
 import { i18n } from '@lingui/core';
-import { renderProvider } from '@utils/testUtils';
+import { renderProvider, timeout } from '@utils/testUtils';
 import { translate } from '@app/utils';
 import en from "@app/translations/en.json";
-import { IndividualSongPage } from '../index';
+import { IndividualSongPage, mapDispatchToProps } from '../index';
 import songData from './song.data.json';
+import { individualSongPageTypes } from '../reducer';
 
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
@@ -56,4 +57,26 @@ describe('<IndividualSongPage /> test suite', () => {
         );
         expect(getAllByTestId('skeleton').length).toBe(3);
     });
+
+    it('should validate mapDispatchToProps actions', async () => {
+        const dispatchIndieSongSpy = jest.fn();
+        const songId = "1440833081";
+        const actions = {
+            dispatchRequestGetItuneSong: {
+                type: individualSongPageTypes.REQUEST_GET_ITUNE_SONG,
+                songId
+            },
+            dispatchClearItuneSong: {
+                type: individualSongPageTypes.CLEAR_ITUNE_SONG,
+            }
+        }
+
+        const props = mapDispatchToProps(dispatchIndieSongSpy);
+        props.dispatchRequestGetItuneSong(songId);
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchRequestGetItuneSong);
+        await timeout(500);
+
+        props.dispatchClearItuneSong();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchClearItuneSong);
+    })
 })
