@@ -10,7 +10,7 @@ import { useAudioManagerSelector } from './selectors';
 export function AudioManager() {
   const audioRef = useRef(null);
   const { src, audioState: audSt } = useAudioManagerSelector();
-  const { dispatchAudioReset } = useAudioManagerDispatch();
+  const { dispatchAudioReset, dispatchEndAudio } = useAudioManagerDispatch();
 
   useEffect(() => {
     dispatchAudioReset();
@@ -27,8 +27,12 @@ export function AudioManager() {
       audioRef.current.pause();
     }
   }, [audSt, audioRef, src]);
+
+  const handleOnEnded = () => {
+    dispatchEndAudio();
+  };
   return (
-    <audio src={src} ref={audioRef}>
+    <audio src={src} ref={audioRef} onEnded={handleOnEnded}>
       <source type="type/mpeg"></source>
     </audio>
   );

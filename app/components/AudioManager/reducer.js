@@ -11,7 +11,8 @@ export const { Types: audioManagerTypes, Creators: audioManagerCreators } = crea
   play: {},
   pause: {},
   playNew: ['src'],
-  reset: {}
+  reset: {},
+  end: {}
 });
 
 export const audioState = {
@@ -25,22 +26,29 @@ export const initialState = { src: null, audioState: audioState.NO_SONG };
 
 export const audioManagerReducer = (state = initialState, action) =>
   produce(state, (draft) => {
-    switch (action.type) {
-      case audioManagerTypes.PLAY:
+    const actionHandlers = {
+      [audioManagerTypes.PLAY]: () => {
         draft.audioState = audioState.PLAYING;
-        break;
-      case audioManagerTypes.PAUSE:
+      },
+      [audioManagerTypes.PAUSE]: () => {
         draft.audioState = audioState.PAUSED;
-        break;
-      case audioManagerTypes.PLAY_NEW:
+      },
+      [audioManagerTypes.PLAY_NEW]: () => {
         draft.audioState = audioState.PLAYING;
         draft.src = action.src;
-        break;
-      case audioManagerTypes.RESET:
+      },
+      [audioManagerTypes.RESET]: () => {
         draft.audioState = audioState.NO_SONG;
         draft.src = null;
-        break;
-      default:
+      },
+      [audioManagerTypes.END]: () => {
+        draft.audioState = audioState.ENDED;
+      }
+    };
+
+    const handler = actionHandlers[action.type];
+    if (handler) {
+      handler();
     }
   });
 
@@ -52,6 +60,10 @@ export const useAudioManagerDispatch = () => {
     dispatchAudioReset: () =>
       dispatch({
         type: audioManagerTypes.RESET
+      }),
+    dispatchEndAudio: () =>
+      dispatch({
+        type: audioManagerTypes.END
       })
   };
 };

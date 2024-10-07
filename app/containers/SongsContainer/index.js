@@ -176,13 +176,13 @@ const renderSongs = ({
       dispatchPlayNewAudio(item?.previewUrl);
       return;
     }
-    if (audSt === audioState.PAUSED) {
-      dispatchPlayAudio();
-      return;
-    }
+
     if (audSt === audioState.PLAYING) {
       dispatchPauseAudio();
+      return;
     }
+
+    dispatchPlayAudio();
   };
   return (
     <If condition={!isEmpty(items) || loading}>
