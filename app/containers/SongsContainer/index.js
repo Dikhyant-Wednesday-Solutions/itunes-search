@@ -3,21 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
 import { createStructuredSelector } from 'reselect';
 import { injectSaga } from 'redux-injectors';
 import styled from '@emotion/styled';
 import { IconButton, InputAdornment, OutlinedInput, Card, CardHeader, Divider, Skeleton } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
-import isEmpty from 'lodash/isEmpty';
-import debounce from 'lodash/debounce';
 import { translate } from '@app/utils';
-import { selectLoading, selectSongName, selectSongsData, selectSongsError } from './selectors';
-import { songsContainerCreators } from './reducer';
-import songsContainerSaga from './saga';
 import T from '@components/T';
 import { If } from '@app/components/If/index';
 import { For } from '@app/components/For/index';
 import { MediaItemCard } from '@app/components/MediaItemCard/index';
+import { selectLoading, selectSongName, selectSongsData, selectSongsError } from './selectors';
+import { songsContainerCreators } from './reducer';
+import songsContainerSaga from './saga';
 
 const CustomCard = styled(Card)`
   && {
@@ -52,25 +52,20 @@ const Grid = styled.div`
 
 /**
  * SongsContainer component is responsible for fetching and displaying song data fetched from itunes
- * It includes input handling, loading state management, and rendering of the repository list or error state.
- *
  *
  * @param {Object} props - The component props.
- * @param {Function} props.dispatchRequestGetItuneSongs - Function to dispatch the action for fetching Itune items.
- * @param {Function} props.dispatchClearItuneSongs - Function to dispatch the action for clearing the Itune items data.
- * @param {Object} props.songsData - The data of the itune items fetched.
- * @param {Object} props.songsError - The error object if there is an error fetching the itune items.
- * @param {string} props.songName - The name of the itune item to search for.
- * @returns {JSX.Element} The HomeContainer component.
+ * @param {Function} props.dispatchRequestGetItuneSongs - dispatch action to get itune songs
+ * @param {Function} props.dispatchClearItuneSongs - dispatch action to clear all songs from store
+ * @param {Object} props.songsData - info of songs fetched from itunes
+ * @param {string} props.songName - name of the song provided by user as input
+ * @returns {JSX.Element} The SongsContainer component
  */
 export function SongsContainer({
   dispatchRequestGetItuneSongs,
   dispatchClearItuneSongs,
-  intl,
   songsData,
   songsError,
   songName,
-  history,
   loading
 }) {
   useEffect(() => {
@@ -117,25 +112,6 @@ export function SongsContainer({
           </InputAdornment>
         }
       />
-      {/* <If condition={songsData?.results?.length > 0}>
-        <For
-          of={songsData?.results}
-          ParentComponent={Grid}
-          renderItem={(item, index) => {
-            return (
-              <MediaItemCard
-                key={index}
-                trackName={item?.trackName}
-                collectionName={item?.collectionName}
-                artistName={item?.artistName}
-                country={item?.country}
-                primaryGenreName={item?.primaryGenreName}
-                thumbnailSrc={item?.artworkUrl100}
-              />
-            );
-          }}
-        />
-      </If> */}
       {renderSongs(loading, songsData)}
       {renderErrorState(songName, loading, songsError)}
       <If condition={!isEmpty(songName) && !loading && !isEmpty(songsData)}>{renderNoSongsFound()}</If>
@@ -174,16 +150,29 @@ const renderSongs = (loading, songsData) => {
             of={items}
             ParentComponent={Grid}
             renderItem={(item, index) => {
+              const requiredFields = [
+                'trackId',
+                'trackName',
+                'collectionName',
+                'artistName',
+                'country',
+                'primaryGenreName',
+                'artworkUrl100'
+              ];
+
+              const shouldRender = requiredFields.every((field) => get(item, field));
               return (
-                <MediaItemCard
-                  key={index}
-                  trackName={item?.trackName}
-                  collectionName={item?.collectionName}
-                  artistName={item?.artistName}
-                  country={item?.country}
-                  primaryGenreName={item?.primaryGenreName}
-                  thumbnailSrc={item?.artworkUrl100}
-                />
+                <If condition={shouldRender}>
+                  <MediaItemCard
+                    key={item?.trackId}
+                    trackName={item?.trackName}
+                    collectionName={item?.collectionName}
+                    artistName={item?.artistName}
+                    country={item?.country}
+                    primaryGenreName={item?.primaryGenreName}
+                    thumbnailSrc={item?.artworkUrl100}
+                  />
+                </If>
               );
             }}
           />
@@ -217,14 +206,12 @@ const renderErrorState = (songName, loading, songsError) => {
 SongsContainer.propTypes = {
   dispatchRequestGetItuneSongs: PropTypes.func,
   dispatchClearItuneSongs: PropTypes.func,
-  intl: PropTypes.object,
   songsData: PropTypes.shape({
     resultCount: PropTypes.number,
     results: PropTypes.array
   }),
   songsError: PropTypes.string,
   songName: PropTypes.string,
-  history: PropTypes.object,
   loading: PropTypes.bool
 };
 
@@ -240,7 +227,11 @@ const mapStateToProps = createStructuredSelector({
   songName: selectSongName()
 });
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * mapDispatchToProps - maps store dispatchers with props
+ * @param {*} dispatch
+ * @returns {Object} dispatchers for getting itune songs and clearing songs from store
+ */
 export function mapDispatchToProps(dispatch) {
   const { requestGetItuneSongs, clearItuneSongs } = songsContainerCreators;
   return {

@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { string } from 'prop-types';
-import { If } from '../If/index';
+import styled from '@emotion/styled';
+import { colors } from '@app/themes/index';
 
 const Card = styled.div`
   border-style: solid;
@@ -11,19 +11,16 @@ const Card = styled.div`
 
   &:hover {
     cursor: pointer;
-    background: #eaeaea;
+    background: ${colors.greenWhite};
   }
 
   &:active {
-    background: #cacaca;
+    background: ${colors.pastelGrey};
   }
 `;
 
 /**
  * MediaItemCard component that displays information about a Media item (like a song).
- * It shows the repository's name, full name, and star count.
- *
- * @date 01/03/2024 - 14:47:28
  *
  * @param {Object} props - The component props.
  * @param {string} props.trackName - The name of the track.
@@ -32,29 +29,17 @@ const Card = styled.div`
  * @param {string} props.country - The name of the country the media is from
  * @param {string} props.primaryGenreName - Genre name
  * @param {string} props.thumbnailSrc - thumbnail of the media
- * @returns {JSX.Element} The RepoCard component displaying the repository information.
+ * @returns {JSX.Element} The MediaItemCard component displaying the song information.
  */
 export function MediaItemCard({ trackName, collectionName, artistName, country, primaryGenreName, thumbnailSrc }) {
   return (
     <Card data-testid="media-item-card">
-      <If condition={thumbnailSrc !== undefined}>
-        <img src={thumbnailSrc} alt="thumbnail" />
-      </If>
-      <If condition={trackName !== undefined}>
-        <div data-testid="track_name">{trackName}</div>
-      </If>
-      <If condition={collectionName !== undefined}>
-        <div data-testid="collection_name">{collectionName}</div>
-      </If>
-      <If condition={artistName !== undefined}>
-        <div data-testid="artist_name">{artistName}</div>
-      </If>
-      <If condition={country !== undefined}>
-        <div data-testid="country">{country}</div>
-      </If>
-      <If condition={primaryGenreName !== undefined}>
-        <div data-testid="primary_genre_name">{primaryGenreName}</div>
-      </If>
+      <img data-testid="thumbnail" src={thumbnailSrc} alt="thumbnail" />
+      <div data-testid="track_name">{trackName}</div>
+      <div data-testid="collection_name">{collectionName}</div>
+      <div data-testid="artist_name">{artistName}</div>
+      <div data-testid="country">{country}</div>
+      <div data-testid="primary_genre_name">{primaryGenreName}</div>
     </Card>
   );
 }

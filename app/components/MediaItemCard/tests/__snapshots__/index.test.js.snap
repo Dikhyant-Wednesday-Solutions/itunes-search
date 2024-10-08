@@ -6,7 +6,27 @@ exports[`<MediaItemCard /> should render and match the snapshot 1`] = `
     <div
       class="css-1ljz9sh e1f5w7bs0"
       data-testid="media-item-card"
-    />
+    >
+      <img
+        alt="thumbnail"
+        data-testid="thumbnail"
+      />
+      <div
+        data-testid="track_name"
+      />
+      <div
+        data-testid="collection_name"
+      />
+      <div
+        data-testid="artist_name"
+      />
+      <div
+        data-testid="country"
+      />
+      <div
+        data-testid="primary_genre_name"
+      />
+    </div>
   </div>
 </body>
 `;
