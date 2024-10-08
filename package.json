@@ -102,6 +102,7 @@
     "@mui/material": "^5.11.5",
     "@mui/styled-engine": "^5.11.0",
     "@mui/styled-engine-sc": "^5.11.0",
+    "@testing-library/react-hooks": "8.0.1",
     "chalk": "4.1.1",
     "compression": "1.7.4",
     "cross-env": "7.0.3",
