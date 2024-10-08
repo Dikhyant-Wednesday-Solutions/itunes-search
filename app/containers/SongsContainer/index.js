@@ -122,10 +122,7 @@ export function SongsContainer({
         }
       />
       {renderSongs(loading, songsData)}
-      {renderErrorState(songName, loading, songsError)}
-      <If condition={!isEmpty(songName) && !loading && (isEmpty(songsData) || songsData?.results?.length === 0)}>
-        {renderNoSongsFound()}
-      </If>
+      <If condition={!loading}>{renderErrorState(songName, songsError)}</If>
     </Page>
   );
 }
@@ -137,17 +134,6 @@ const renderSkeleton = () => {
       <Skeleton data-testid="skeleton" animation="wave" variant="text" height={40} />
       <Skeleton data-testid="skeleton" animation="wave" variant="text" height={40} />
     </LoadingComponentContainer>
-  );
-};
-
-const renderNoSongsFound = () => {
-  const notFoundText = translate('song_not_found');
-  return (
-    <CustomCard color={'grey'} maxwidth={971}>
-      <CustomCardHeader title={translate('oops')} />
-      <Divider sx={{ mb: 1.25 }} light />
-      <T data-testid={'no-songs-message'} id={notFoundText} text={notFoundText} />
-    </CustomCard>
   );
 };
 
@@ -193,24 +179,25 @@ const renderSongs = (loading, songsData) => {
   );
 };
 
-const renderErrorState = (songName, loading, songsError) => {
-  let error;
-  let messageId;
-  if (songsError) {
-    error = songsError;
-    messageId = 'error-message';
-  } else if (isEmpty(songName)) {
+const renderErrorState = (songName, songsError) => {
+  let error = songsError;
+  let messageId = 'error-message';
+
+  if (isEmpty(songName)) {
     error = 'songs_search_default';
     messageId = 'default-message';
   }
+
+  if (!isEmpty(songName) && !songsError) {
+    error = 'song_not_found';
+    messageId = 'no-songs-message';
+  }
   return (
-    <If condition={!loading && error}>
-      <CustomCard color={songsError ? 'red' : 'grey'} maxwidth={971}>
-        <CustomCardHeader title={translate('media_list')} />
-        <Divider sx={{ mb: 1.25 }} light />
-        <T data-testid={messageId} id={error} text={error} />
-      </CustomCard>
-    </If>
+    <CustomCard color={songsError ? 'red' : 'grey'} maxwidth={971}>
+      <CustomCardHeader title={translate('media_list')} />
+      <Divider sx={{ mb: 1.25 }} light />
+      <T data-testid={messageId} id={error} text={error} />
+    </CustomCard>
   );
 };
 

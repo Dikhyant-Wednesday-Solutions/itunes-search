@@ -1,10 +1,15 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/dom';
+import { i18n } from '@lingui/core';
 import { timeout, renderProvider } from '@utils/testUtils';
 import { mapDispatchToProps, SongsContainer } from '../index';
 import { songsContainerTypes } from '../reducer';
 import { translate } from '@app/utils';
+import en from "@app/translations/en.json";
 import songData from './song.data.json';
+
+i18n.load('en', en);
+i18n.activate('en');
 
 describe('<SongsContainer />', () => {
     it('should render and match the snapshot', () => {
@@ -89,9 +94,10 @@ describe('<SongsContainer />', () => {
         expect(spy).toHaveBeenCalledWith(actions.dispatchClearItuneSongs);
     });
 
-    it('should render default error message when search goes wrong', () => {
+    it('should render default error message when search goes wrong even though songName is provided', () => {
+        const songName = "Mary on a cross";
         const defaultError = translate('something_went_wrong');
-        const { getByTestId } = renderProvider(<SongsContainer songsError={defaultError} />);
+        const { getByTestId } = renderProvider(<SongsContainer songsError={defaultError} songName={songName} dispatchRequestGetItuneSongs={jest.fn()} />);
         expect(getByTestId('error-message')).toBeInTheDocument();
         expect(getByTestId('error-message')).toHaveTextContent(defaultError);
     });
