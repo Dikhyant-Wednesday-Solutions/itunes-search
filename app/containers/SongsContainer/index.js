@@ -4,18 +4,19 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { injectSaga } from 'redux-injectors';
+import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
+import debounce from 'lodash/debounce';
 import styled from '@emotion/styled';
 import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
-import isEmpty from 'lodash/isEmpty';
-import debounce from 'lodash/debounce';
 import { translate } from '@app/utils';
-import { selectLoading, selectSongName, selectSongsData, selectSongsError } from './selectors';
-import { songsContainerCreators } from './reducer';
-import songsContainerSaga from './saga';
 import { If } from '@app/components/If/index';
 import { For } from '@app/components/For/index';
 import { MediaItemCard } from '@app/components/MediaItemCard/index';
+import { selectLoading, selectSongName, selectSongsData, selectSongsError } from './selectors';
+import { songsContainerCreators } from './reducer';
+import songsContainerSaga from './saga';
 
 const StyledOutlinedInput = styled(OutlinedInput)`
   legend {
@@ -34,18 +35,15 @@ const Grid = styled.div`
 
 /**
  * SongsContainer component is responsible for fetching and displaying song data fetched from itunes
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.dispatchRequestGetItuneSongs - dispatch action to get itune songs
+ * @param {Function} props.dispatchClearItuneSongs - dispatch action to clear all songs from store
+ * @param {Object} props.songsData - info of songs fetched from itunes
+ * @param {string} props.songName - name of the song provided by user as input
  * @returns {JSX.Element} The SongsContainer component
  */
-export function SongsContainer({
-  dispatchRequestGetItuneSongs,
-  dispatchClearItuneSongs,
-  intl,
-  songsData,
-  songsError,
-  songName,
-  history,
-  loading
-}) {
+export function SongsContainer({ dispatchRequestGetItuneSongs, dispatchClearItuneSongs, songsData, songName }) {
   useEffect(() => {
     if (songName && songsData?.results?.length === 0) {
       dispatchRequestGetItuneSongs(songName);
@@ -94,17 +92,30 @@ export function SongsContainer({
         <For
           of={songsData.results}
           ParentComponent={Grid}
-          renderItem={(item, index) => {
+          renderItem={(item) => {
+            const requiredFields = [
+              'trackId',
+              'trackName',
+              'collectionName',
+              'artistName',
+              'country',
+              'primaryGenreName',
+              'artworkUrl100'
+            ];
+
+            const shouldRender = requiredFields.every((field) => get(item, field));
             return (
-              <MediaItemCard
-                key={index}
-                trackName={item?.trackName}
-                collectionName={item?.collectionName}
-                artistName={item?.artistName}
-                country={item?.country}
-                primaryGenreName={item?.primaryGenreName}
-                thumbnailSrc={item?.artworkUrl100}
-              />
+              <If condition={shouldRender}>
+                <MediaItemCard
+                  key={item?.trackId}
+                  trackName={item?.trackName}
+                  collectionName={item?.collectionName}
+                  artistName={item?.artistName}
+                  country={item?.country}
+                  primaryGenreName={item?.primaryGenreName}
+                  thumbnailSrc={item?.artworkUrl100}
+                />
+              </If>
             );
           }}
         />
@@ -139,7 +150,11 @@ const mapStateToProps = createStructuredSelector({
   songName: selectSongName()
 });
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * mapDispatchToProps - maps store dispatchers with props
+ * @param {*} dispatch
+ * @returns {Object} dispatchers for getting itune songs and clearing songs from store
+ */
 export function mapDispatchToProps(dispatch) {
   const { requestGetItuneSongs, clearItuneSongs } = songsContainerCreators;
   return {

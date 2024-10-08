@@ -3,7 +3,7 @@ import snakeCase from 'lodash/snakeCase';
 import camelCase from 'lodash/camelCase';
 import { mapKeysDeep } from './index';
 
-const API_TYPES = {
+export const API_TYPES = {
   GITHUB: 'github',
   ITUNES: 'itunes',
   DEFAULT: 'default'
