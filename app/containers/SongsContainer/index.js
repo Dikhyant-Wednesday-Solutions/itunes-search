@@ -21,9 +21,8 @@ import songsContainerSaga from './saga';
 
 const CustomCard = styled(Card)`
   && {
-    margin: 1.25rem 0;
-    padding: 1rem;
-    max-width: ${(props) => props.maxwidth};
+    margin: 20px 0px;
+    padding: 16px;
     color: ${(props) => props.color};
     ${(props) => props.color && `color: ${props.color}`};
   }
@@ -36,6 +35,9 @@ const CustomCardHeader = styled(CardHeader)`
 `;
 
 const StyledOutlinedInput = styled(OutlinedInput)`
+  & {
+    margin: 20px 0px;
+  }
   legend {
     display: none;
   }
@@ -46,10 +48,17 @@ const StyledOutlinedInput = styled(OutlinedInput)`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 317px 317px 317px;
   gap: 10px;
 `;
 
+const LoadingComponentContainer = styled.div`
+  margin: 10px auto;
+`;
+const Page = styled.div`
+  width: 971px;
+  margin: 0px auto;
+`;
 /**
  * SongsContainer component is responsible for fetching and displaying song data fetched from itunes
  *
@@ -92,7 +101,7 @@ export function SongsContainer({
     searchSongName(songName);
   };
   return (
-    <>
+    <Page>
       <StyledOutlinedInput
         inputProps={{ 'data-testid': 'search-bar' }}
         onChange={(event) => debouncedHandleOnChange(event.target.value)}
@@ -114,25 +123,27 @@ export function SongsContainer({
       />
       {renderSongs(loading, songsData)}
       {renderErrorState(songName, loading, songsError)}
-      <If condition={!isEmpty(songName) && !loading && !isEmpty(songsData)}>{renderNoSongsFound()}</If>
-    </>
+      <If condition={!isEmpty(songName) && !loading && (isEmpty(songsData) || songsData?.results?.length === 0)}>
+        {renderNoSongsFound()}
+      </If>
+    </Page>
   );
 }
 
 const renderSkeleton = () => {
   return (
-    <>
+    <LoadingComponentContainer>
       <Skeleton data-testid="skeleton" animation="wave" variant="text" height={40} />
       <Skeleton data-testid="skeleton" animation="wave" variant="text" height={40} />
       <Skeleton data-testid="skeleton" animation="wave" variant="text" height={40} />
-    </>
+    </LoadingComponentContainer>
   );
 };
 
 const renderNoSongsFound = () => {
   const notFoundText = translate('song_not_found');
   return (
-    <CustomCard color={'grey'}>
+    <CustomCard color={'grey'} maxwidth={971}>
       <CustomCardHeader title={translate('oops')} />
       <Divider sx={{ mb: 1.25 }} light />
       <T data-testid={'no-songs-message'} id={notFoundText} text={notFoundText} />
@@ -194,7 +205,7 @@ const renderErrorState = (songName, loading, songsError) => {
   }
   return (
     <If condition={!loading && error}>
-      <CustomCard color={songsError ? 'red' : 'grey'}>
+      <CustomCard color={songsError ? 'red' : 'grey'} maxwidth={971}>
         <CustomCardHeader title={translate('media_list')} />
         <Divider sx={{ mb: 1.25 }} light />
         <T data-testid={messageId} id={error} text={error} />
