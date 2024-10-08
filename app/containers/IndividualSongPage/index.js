@@ -154,6 +154,7 @@ const renderSongInfo = ({
   const handleOnPausePlayClick = () => {
     if (audSt === audioState.NO_SONG) {
       dispatchPlayNewAudio(songData?.previewUrl);
+      return;
     }
 
     if (audSt !== audioState.PLAYING) {
@@ -177,7 +178,11 @@ const renderSongInfo = ({
             <SongInfoText>{songData?.releaseDate}</SongInfoText>
             <SongInfoText>{songData?.country}</SongInfoText>
             <PausePlayContainer>
-              <PausePlay onClick={handleOnPausePlayClick} playing={audSt === audioState.PLAYING} />
+              <PausePlay
+                data-testid="pause-play"
+                onClick={handleOnPausePlayClick}
+                playing={audSt === audioState.PLAYING}
+              />
             </PausePlayContainer>
           </SongInfoContainer>
         </If>

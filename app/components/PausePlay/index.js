@@ -31,9 +31,9 @@ const PauseIcon = styled(PauseSharp)``;
  * @param {Function} props.onClick - callback to check if this button was clicked
  * @returns {JSX.Element} The PausePlay component displaying the repository information.
  */
-export default function PausePlay({ playing, onClick }) {
+export default function PausePlay({ playing, onClick, ...props }) {
   return (
-    <CustomButton onClick={onClick ?? onClick}>
+    <CustomButton {...props} onClick={onClick ?? onClick}>
       <If condition={playing} otherwise={<PlayIcon />}>
         <PauseIcon />
       </If>
