@@ -33,13 +33,13 @@ const Card = styled.div`
  */
 export function MediaItemCard({ trackName, collectionName, artistName, country, primaryGenreName, thumbnailSrc }) {
   return (
-    <Card>
-      <img src={thumbnailSrc} alt="thumbnail" />
-      <div>{trackName}</div>
-      <div>{collectionName}</div>
-      <div>{artistName}</div>
-      <div>{country}</div>
-      <div>{primaryGenreName}</div>
+    <Card data-testid="media-item-card">
+      <img data-testid="thumbnail" src={thumbnailSrc} alt="thumbnail" />
+      <div data-testid="track_name">{trackName}</div>
+      <div data-testid="collection_name">{collectionName}</div>
+      <div data-testid="artist_name">{artistName}</div>
+      <div data-testid="country">{country}</div>
+      <div data-testid="primary_genre_name">{primaryGenreName}</div>
     </Card>
   );
 }
