@@ -2,10 +2,10 @@ import React from 'react';
 import Router from "react-router-dom";
 import { fireEvent } from '@testing-library/dom';
 import { i18n } from '@lingui/core';
-import { renderProvider } from '@utils/testUtils';
+import { renderProvider, timeout } from '@utils/testUtils';
 import { translate } from '@app/utils';
 import en from "@app/translations/en.json";
-import { audioState } from '@app/components/AudioManager/reducer';
+import { audioManagerTypes, audioState } from '@app/components/AudioManager/reducer';
 import { IndividualSongPage, mapDispatchToProps } from '../index';
 import songData from './song.data.json';
 import { individualSongPageTypes } from '../reducer';
@@ -109,13 +109,32 @@ describe('<IndividualSongPage /> test suite', () => {
                 type: individualSongPageTypes.REQUEST_GET_ITUNE_SONG,
                 songId
             },
-            dispatchClearItuneSong: {
-                type: individualSongPageTypes.CLEAR_ITUNE_SONG,
+            dispatchPlayAudio: {
+                type: audioManagerTypes.PLAY
+            },
+            dispatchPauseAudio: {
+                type: audioManagerTypes.PAUSE
+            },
+            dispatchPlayNewAudio: {
+                type: audioManagerTypes.PLAY_NEW,
+                src: songData.previewUrl
             }
         }
 
         const props = mapDispatchToProps(dispatchIndieSongSpy);
         props.dispatchRequestGetItuneSong(songId);
         expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchRequestGetItuneSong);
+
+        await timeout(500);
+        props.dispatchPlayAudio();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchPlayAudio);
+
+        await timeout(500);
+        props.dispatchPauseAudio();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchPauseAudio);
+
+        await timeout(500);
+        props.dispatchPlayNewAudio();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchPlayNewAudio);
     })
 })
