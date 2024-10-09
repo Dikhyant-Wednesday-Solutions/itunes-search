@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
 import { createStructuredSelector } from 'reselect';
+import { bool, shape, number, array, string, func } from 'prop-types';
 import { Skeleton, Card, Divider, CardHeader } from '@mui/material';
 import styled from '@emotion/styled';
-import { bool, shape, number, array, string, func } from 'prop-types';
+import T from '@components/T';
 import { If } from '@components/If';
 import { translate } from '@app/utils';
 import { selectLoading, selectSongData, selectSongError, selectSongId } from './selectors';
 import { individualSongPageCreators } from './reducer';
 import individualSongPageSaga from './saga';
-import T from '@components/T';
 
 const CustomCard = styled(Card)`
   && {
@@ -55,9 +55,8 @@ export function IndividualSongPage({
   const { id } = useParams();
   const { state } = useLocation();
   const songDataFromPreviousPage = state?.songData;
-  // const {trackName, collectionName, artistName, country, primaryGenreName, artworkUrl100: thumbnailSrc} = state;
   useEffect(() => {
-    if (songDataFromPreviousPage === undefined) {
+    if (songDataFromPreviousPage === undefined && id && dispatchRequestGetItuneSong) {
       dispatchRequestGetItuneSong(id);
     }
   }, [id, songDataFromPreviousPage]);
@@ -65,11 +64,7 @@ export function IndividualSongPage({
     <>
       <If
         condition={songDataFromPreviousPage !== undefined}
-        otherwise={
-          <If condition={songData && songData?.results?.length >= 0}>
-            {renderSongInfo(loading, songData?.results?.[0])}
-          </If>
-        }
+        otherwise={renderSongInfo(loading, songData?.results?.[0])}
       >
         {renderSongInfo(false, songDataFromPreviousPage)}
       </If>
