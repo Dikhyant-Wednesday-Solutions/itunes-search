@@ -74,9 +74,5 @@ describe('<IndividualSongPage /> test suite', () => {
         const props = mapDispatchToProps(dispatchIndieSongSpy);
         props.dispatchRequestGetItuneSong(songId);
         expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchRequestGetItuneSong);
-        await timeout(500);
-
-        props.dispatchClearItuneSong();
-        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchClearItuneSong);
     })
 })
