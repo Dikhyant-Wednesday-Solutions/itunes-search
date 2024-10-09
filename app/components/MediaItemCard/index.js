@@ -1,9 +1,17 @@
+/**
+ *
+ * MediaItemCard
+ *
+ */
+
 import React from 'react';
-import { string } from 'prop-types';
+import { bool, string } from 'prop-types';
 import styled from '@emotion/styled';
 import { colors } from '@app/themes/index';
+import PausePlay from '../PausePlay/index';
 
 const Card = styled.div`
+  position: relative;
   border-style: solid;
   border-width: 1px;
   padding: 5px;
@@ -17,6 +25,13 @@ const Card = styled.div`
   &:active {
     background: ${colors.pastelGrey};
   }
+`;
+
+const PausePlayContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 /**
@@ -39,7 +54,9 @@ export function MediaItemCard({
   country,
   primaryGenreName,
   thumbnailSrc,
-  onClick
+  playing,
+  onClick,
+  onPausePlayClick
 }) {
   return (
     <Card data-testid="media-item-card" onClick={onClick ?? onClick}>
@@ -49,6 +66,9 @@ export function MediaItemCard({
       <div data-testid="artist_name">{artistName}</div>
       <div data-testid="country">{country}</div>
       <div data-testid="primary_genre_name">{primaryGenreName}</div>
+      <PausePlayContainer id="pause-play-container">
+        <PausePlay playing={playing} onClick={onPausePlayClick ?? onPausePlayClick} />
+      </PausePlayContainer>
     </Card>
   );
 }
@@ -60,7 +80,9 @@ MediaItemCard.propTypes = {
   country: string,
   primaryGenreName: string,
   thumbnailSrc: string,
-  onClick: Function
+  playing: bool,
+  onClick: Function,
+  onPausePlayClick: Function
 };
 
 export default MediaItemCard;

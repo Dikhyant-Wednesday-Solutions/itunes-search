@@ -4,7 +4,7 @@ exports[`<MediaItemCard /> should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="css-1ljz9sh e1f5w7bs0"
+      class="css-187h0om e1f5w7bs1"
       data-testid="media-item-card"
     >
       <img
@@ -26,6 +26,26 @@ exports[`<MediaItemCard /> should render and match the snapshot 1`] = `
       <div
         data-testid="primary_genre_name"
       />
+      <div
+        class="css-1aslf6p e1f5w7bs0"
+        id="pause-play-container"
+      >
+        <button
+          class="css-7a0tfp e11o46g22"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium e11o46g21 css-evrvcf-MuiSvgIcon-root"
+            data-testid="PlayArrowOutlinedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M10 8.64 15.27 12 10 15.36zM8 5v14l11-7z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </body>
