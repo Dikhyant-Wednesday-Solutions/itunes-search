@@ -2,6 +2,16 @@
 
 exports[`<IndividualSongPage /> test suite should render and match snapshot 1`] = `
 <body>
-  <div />
+  <div>
+    <div
+      class="css-zjik7 e193px3m4"
+    >
+      <audio>
+        <source
+          type="type/mpeg"
+        />
+      </audio>
+    </div>
+  </div>
 </body>
 `;

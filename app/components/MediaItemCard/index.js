@@ -35,6 +35,14 @@ const Card = styled.div`
     scale: 1.15;
   }
 
+  #thumbnail {
+    transition: scale 1s;
+  }
+
+  &:hover #thumbnail {
+    scale: 1.15;
+  }
+
   &:active {
     background: ${colors.pastelGrey};
   }

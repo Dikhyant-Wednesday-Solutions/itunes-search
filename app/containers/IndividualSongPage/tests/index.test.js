@@ -1,12 +1,15 @@
 import React from 'react';
 import Router from "react-router-dom";
+import { fireEvent } from '@testing-library/dom';
 import { i18n } from '@lingui/core';
 import { renderProvider, timeout } from '@utils/testUtils';
 import { translate } from '@app/utils';
 import en from "@app/translations/en.json";
+import { audioManagerTypes, audioState } from '@app/components/AudioManager/reducer';
 import { IndividualSongPage, mapDispatchToProps } from '../index';
 import songData from './song.data.json';
 import { individualSongPageTypes } from '../reducer';
+
 
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
@@ -43,6 +46,46 @@ describe('<IndividualSongPage /> test suite', () => {
         expect(dispatchRequestGetItuneSongSpy).not.toHaveBeenCalled();
     });
 
+    it('should call dispatchPlayAudio when pause-play button is clicked and audioState is ENDED', () => {
+        const dispatchPlayAudioSpy = jest.fn();
+        const audSt = audioState.ENDED;
+        const { getByTestId } = renderProvider(
+            <IndividualSongPage audioState={audSt} songData={songData} dispatchRequestGetItuneSong={jest.fn()} dispatchPlayAudio={dispatchPlayAudioSpy} />
+        );
+        fireEvent.click(getByTestId('pause-play'));
+        expect(dispatchPlayAudioSpy).toHaveBeenCalled();
+    });
+
+    it('should call dispatchPlayAudio when pause-play button is clicked and audioState is PAUSED ', () => {
+        const dispatchPlayAudioSpy = jest.fn();
+        const audSt = audioState.PAUSED;
+        const { getByTestId } = renderProvider(
+            <IndividualSongPage audioState={audSt} songData={songData} dispatchRequestGetItuneSong={jest.fn()} dispatchPlayAudio={dispatchPlayAudioSpy} />
+        );
+        fireEvent.click(getByTestId('pause-play'));
+        expect(dispatchPlayAudioSpy).toHaveBeenCalled();
+    });
+
+    it('should call dispatchPlayNewAudio when pause-play button is clicked and audioState is NO_SONG ', () => {
+        const dispatchPlayNewAudioSpy = jest.fn();
+        const audSt = audioState.NO_SONG;
+        const { getByTestId } = renderProvider(
+            <IndividualSongPage audioState={audSt} songData={songData} dispatchRequestGetItuneSong={jest.fn()} dispatchPlayNewAudio={dispatchPlayNewAudioSpy} />
+        );
+        fireEvent.click(getByTestId('pause-play'));
+        expect(dispatchPlayNewAudioSpy).toHaveBeenCalled();
+    });
+
+    it('should call dispatchPauseAudio when pause-play button is clicked and audioState is PLAYING ', () => {
+        const dispatchPauseAudioSpy = jest.fn();
+        const audSt = audioState.PLAYING;
+        const { getByTestId } = renderProvider(
+            <IndividualSongPage audioState={audSt} songData={songData} dispatchRequestGetItuneSong={jest.fn()} dispatchPauseAudio={dispatchPauseAudioSpy} />
+        );
+        fireEvent.click(getByTestId('pause-play'));
+        expect(dispatchPauseAudioSpy).toHaveBeenCalled();
+    });
+
     it('should render error component when songError is provided', () => {
         const defaultError = translate('something_went_wrong');
         console.log(defaultError);
@@ -66,17 +109,32 @@ describe('<IndividualSongPage /> test suite', () => {
                 type: individualSongPageTypes.REQUEST_GET_ITUNE_SONG,
                 songId
             },
-            dispatchClearItuneSong: {
-                type: individualSongPageTypes.CLEAR_ITUNE_SONG,
+            dispatchPlayAudio: {
+                type: audioManagerTypes.PLAY
+            },
+            dispatchPauseAudio: {
+                type: audioManagerTypes.PAUSE
+            },
+            dispatchPlayNewAudio: {
+                type: audioManagerTypes.PLAY_NEW,
+                src: songData.previewUrl
             }
         }
 
         const props = mapDispatchToProps(dispatchIndieSongSpy);
         props.dispatchRequestGetItuneSong(songId);
         expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchRequestGetItuneSong);
-        await timeout(500);
 
-        props.dispatchClearItuneSong();
-        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchClearItuneSong);
+        await timeout(500);
+        props.dispatchPlayAudio();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchPlayAudio);
+
+        await timeout(500);
+        props.dispatchPauseAudio();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchPauseAudio);
+
+        await timeout(500);
+        props.dispatchPlayNewAudio();
+        expect(dispatchIndieSongSpy).toHaveBeenCalledWith(actions.dispatchPlayNewAudio);
     })
 })
