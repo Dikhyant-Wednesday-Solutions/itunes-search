@@ -5,7 +5,8 @@
 import { combineReducers } from 'redux';
 import LanguageProviderReducer from '@containers/LanguageProvider/reducer';
 import HomeContainerReducer from '@containers/HomeContainer/reducer';
-import SongsContainerReducer from './containers/SongsContainer/reducer';
+import SongsContainerReducer from '@containers/SongsContainer/reducer';
+import IndividualSongPageReducer from '@containers/IndividualSongPage/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -15,6 +16,7 @@ export default function createRootReducer(injectedReducer = {}) {
     ...injectedReducer,
     language: LanguageProviderReducer,
     homeContainer: HomeContainerReducer,
-    songsContainer: SongsContainerReducer
+    songsContainer: SongsContainerReducer,
+    individualSongPage: IndividualSongPageReducer
   });
 }

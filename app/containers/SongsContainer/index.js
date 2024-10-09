@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
 import { createStructuredSelector } from 'reselect';
 import { injectSaga } from 'redux-injectors';
+import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { IconButton, InputAdornment, OutlinedInput, Card, CardHeader, Divider, Skeleton } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
@@ -138,7 +139,12 @@ const renderSkeleton = () => {
 };
 
 const renderSongs = (loading, songsData) => {
+  const history = useHistory();
   const items = get(songsData, 'results', []);
+
+  const handleOnCardClick = (id, item) => {
+    history.push(`/songs/${id}`, { songData: item });
+  };
   return (
     <If condition={!isEmpty(items) || loading}>
       <If condition={!loading} otherwise={renderSkeleton()}>
@@ -168,6 +174,7 @@ const renderSongs = (loading, songsData) => {
                     country={item?.country}
                     primaryGenreName={item?.primaryGenreName}
                     thumbnailSrc={item?.artworkUrl100}
+                    onClick={() => handleOnCardClick(item?.trackId, item)}
                   />
                 </If>
               );

@@ -29,11 +29,20 @@ const Card = styled.div`
  * @param {string} props.country - The name of the country the media is from
  * @param {string} props.primaryGenreName - Genre name
  * @param {string} props.thumbnailSrc - thumbnail of the media
+ * @param {Function} props.onClick - callback to handle onclick
  * @returns {JSX.Element} The MediaItemCard component displaying the song information.
  */
-export function MediaItemCard({ trackName, collectionName, artistName, country, primaryGenreName, thumbnailSrc }) {
+export function MediaItemCard({
+  trackName,
+  collectionName,
+  artistName,
+  country,
+  primaryGenreName,
+  thumbnailSrc,
+  onClick
+}) {
   return (
-    <Card data-testid="media-item-card">
+    <Card data-testid="media-item-card" onClick={onClick ?? onClick}>
       <img data-testid="thumbnail" src={thumbnailSrc} alt="thumbnail" />
       <div data-testid="track_name">{trackName}</div>
       <div data-testid="collection_name">{collectionName}</div>
@@ -50,7 +59,8 @@ MediaItemCard.propTypes = {
   artistName: string,
   country: string,
   primaryGenreName: string,
-  thumbnailSrc: string
+  thumbnailSrc: string,
+  onClick: Function
 };
 
 export default MediaItemCard;
