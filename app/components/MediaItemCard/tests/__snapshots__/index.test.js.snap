@@ -4,47 +4,51 @@ exports[`<MediaItemCard /> should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="css-187h0om e1f5w7bs1"
+      class="css-ooi1xh e1f5w7bs4"
       data-testid="media-item-card"
     >
       <img
         alt="thumbnail"
         data-testid="thumbnail"
+        id="thumbnail"
+        style="position: absolute; top: 0px; width: 100%;"
       />
       <div
-        data-testid="track_name"
-      />
-      <div
-        data-testid="collection_name"
-      />
-      <div
-        data-testid="artist_name"
-      />
-      <div
-        data-testid="country"
-      />
-      <div
-        data-testid="primary_genre_name"
-      />
-      <div
-        class="css-1aslf6p e1f5w7bs0"
-        id="pause-play-container"
+        class="css-a6o9mb e1f5w7bs0"
       >
-        <button
-          class="css-7a0tfp e11o46g22"
+        <div
+          class="css-d3v9zr e1f5w7bs3"
         >
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium e11o46g21 css-evrvcf-MuiSvgIcon-root"
-            data-testid="PlayArrowOutlinedIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
+          <div
+            class="css-l8l8b8 e1f5w7bs2"
+            data-testid="track_name"
+            style="color: white;"
+          />
+          <div
+            class="css-l8l8b8 e1f5w7bs2"
+            data-testid="artist_name"
+            style="color: white;"
+          />
+        </div>
+        <div
+          class="css-12q6kdw e1f5w7bs1"
+        >
+          <button
+            class="css-3x49ea e11o46g22"
           >
-            <path
-              d="M10 8.64 15.27 12 10 15.36zM8 5v14l11-7z"
-            />
-          </svg>
-        </button>
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium e11o46g21 css-2pnv19-MuiSvgIcon-root"
+              data-testid="PlayArrowOutlinedIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M10 8.64 15.27 12 10 15.36zM8 5v14l11-7z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>

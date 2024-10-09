@@ -39,9 +39,6 @@ describe('<MediaItemCard />', () => {
 
         expect(getByTestId('thumbnail')).toHaveAttribute('src', thumbnailSrc);
         expect(getByTestId('track_name')).toHaveTextContent(trackName);
-        expect(getByTestId('collection_name')).toHaveTextContent(collectionName);
         expect(getByTestId('artist_name')).toHaveTextContent(artistName);
-        expect(getByTestId('country')).toHaveTextContent(country);
-        expect(getByTestId('primary_genre_name')).toHaveTextContent(primaryGenreName);
  });
 });

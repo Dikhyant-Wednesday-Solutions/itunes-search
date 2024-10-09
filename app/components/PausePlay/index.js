@@ -11,17 +11,16 @@ import { PauseSharp, PlayArrowOutlined } from '@mui/icons-material';
 import { If } from '@app/components/If/index';
 
 const CustomButton = styled.button`
-  width: 100px;
-  aspect-ratio: 1;
+  width: 30px;
+  height: 30px;
   border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-const PlayIcon = styled(PlayArrowOutlined)`
-  scale: 2;
-`;
+const PlayIcon = styled(PlayArrowOutlined)``;
 
-const PauseIcon = styled(PauseSharp)`
-  scale: 2;
-`;
+const PauseIcon = styled(PauseSharp)``;
 
 /**
  * PausePlay component that displays play or pause icon.

@@ -14,12 +14,25 @@ const Card = styled.div`
   position: relative;
   border-style: solid;
   border-width: 1px;
-  padding: 5px;
   border-radius: 5px;
+  overflow: hidden;
+  height: 200px;
+
+  & > * {
+    position: relative;
+  }
 
   &:hover {
     cursor: pointer;
     background: ${colors.greenWhite};
+  }
+
+  #thumbnail {
+    transition: scale 1s;
+  }
+
+  &:hover #thumbnail {
+    scale: 1.15;
   }
 
   &:active {
@@ -27,11 +40,33 @@ const Card = styled.div`
   }
 `;
 
+const TextContainer = styled.div`
+  overflow: hidden;
+`;
+
+const TruncateText = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const PausePlayContainer = styled.div`
+  bottom: 30px;
+  right: 30px;
+`;
+
+const BottomContainer = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #393939c9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+  gap: 10px;
 `;
 
 /**
@@ -39,46 +74,45 @@ const PausePlayContainer = styled.div`
  *
  * @param {Object} props - The component props.
  * @param {string} props.trackName - The name of the track.
- * @param {string} props.collectionName - The name of the collection.
  * @param {string} props.artistName - The name of the artist.
- * @param {string} props.country - The name of the country the media is from
- * @param {string} props.primaryGenreName - Genre name
  * @param {string} props.thumbnailSrc - thumbnail of the media
  * @param {Function} props.onClick - callback to handle onclick
  * @returns {JSX.Element} The MediaItemCard component displaying the song information.
  */
-export function MediaItemCard({
-  trackName,
-  collectionName,
-  artistName,
-  country,
-  primaryGenreName,
-  thumbnailSrc,
-  playing,
-  onClick,
-  onPausePlayClick
-}) {
+export function MediaItemCard({ trackName, artistName, thumbnailSrc, playing, onClick, onPausePlayClick }) {
   return (
-    <Card data-testid="media-item-card" onClick={onClick ?? onClick}>
-      <img data-testid="thumbnail" src={thumbnailSrc} alt="thumbnail" />
-      <div data-testid="track_name">{trackName}</div>
-      <div data-testid="collection_name">{collectionName}</div>
-      <div data-testid="artist_name">{artistName}</div>
-      <div data-testid="country">{country}</div>
-      <div data-testid="primary_genre_name">{primaryGenreName}</div>
-      <PausePlayContainer id="pause-play-container">
-        <PausePlay playing={playing} onClick={onPausePlayClick ?? onPausePlayClick} />
-      </PausePlayContainer>
+    <Card data-testid="media-item-card" onClick={onClick ?? onClick} playing={playing}>
+      <img
+        id="thumbnail"
+        data-testid="thumbnail"
+        src={thumbnailSrc}
+        alt="thumbnail"
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%'
+        }}
+      />
+      <BottomContainer>
+        <TextContainer>
+          <TruncateText data-testid="track_name" style={{ color: 'white' }}>
+            {trackName}
+          </TruncateText>
+          <TruncateText data-testid="artist_name" style={{ color: 'white' }}>
+            {artistName}
+          </TruncateText>
+        </TextContainer>
+        <PausePlayContainer>
+          <PausePlay playing={playing} onClick={onPausePlayClick} />
+        </PausePlayContainer>
+      </BottomContainer>
     </Card>
   );
 }
 
 MediaItemCard.propTypes = {
   trackName: string,
-  collectionName: string,
   artistName: string,
-  country: string,
-  primaryGenreName: string,
   thumbnailSrc: string,
   playing: bool,
   onClick: Function,

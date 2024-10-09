@@ -51,6 +51,7 @@ const StyledOutlinedInput = styled(OutlinedInput)`
 `;
 
 const Grid = styled.div`
+  width: 950px;
   display: grid;
   grid-template-columns: 317px 317px 317px;
   gap: 10px;
