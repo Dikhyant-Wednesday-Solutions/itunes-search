@@ -4,7 +4,7 @@ exports[`<MediaItemCard /> should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="css-ooi1xh e1f5w7bs4"
+      class="css-17i9qj4 e1f5w7bs4"
       data-testid="media-item-card"
     >
       <img
