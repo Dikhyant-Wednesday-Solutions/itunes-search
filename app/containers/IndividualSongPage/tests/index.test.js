@@ -24,7 +24,7 @@ describe('<IndividualSongPage /> test suite', () => {
         jest.spyOn(Router, 'useLocation').mockReturnValue({state: {}});
     });
     it('should render and match snapshot', () => {
-        const { baseElement } = renderProvider(<IndividualSongPage/>);
+        const { baseElement } = renderProvider(<IndividualSongPage dispatchRequestGetItuneSong={jest.fn()}/>);
         expect(baseElement).toMatchSnapshot();
     }); 
 
@@ -46,14 +46,14 @@ describe('<IndividualSongPage /> test suite', () => {
     it('should render error component when songError is provided', () => {
         const defaultError = translate('something_went_wrong');
         console.log(defaultError);
-        const { getByTestId } = renderProvider(<IndividualSongPage songError={defaultError} />);
+        const { getByTestId } = renderProvider(<IndividualSongPage songError={defaultError} dispatchRequestGetItuneSong={jest.fn()} />);
         expect(getByTestId('error-message')).toBeInTheDocument();
         expect(getByTestId('error-message')).toHaveTextContent(defaultError);
     });
 
     it('should render Skeleton Comp when "loading" is true', async () => {
         const { getAllByTestId } = renderProvider(
-          <IndividualSongPage loading={true} />
+          <IndividualSongPage loading={true} dispatchRequestGetItuneSong={jest.fn()} />
         );
         expect(getAllByTestId('skeleton').length).toBe(3);
     });
