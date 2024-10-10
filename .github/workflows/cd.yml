@@ -3,7 +3,7 @@ name: React Template CD
 on:
   push:
     branches:
-      - master
+      - '*'
 
 jobs:
   deploy:
@@ -55,12 +55,12 @@ jobs:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}-${{ env.ENV_NAME }}
           SOURCE_DIR: './build/'
 
-      - name: Invalidate CloudFront
-        if: github.ref == 'refs/heads/master'
-        uses: chetan/invalidate-cloudfront-action@master
-        env:
-          DISTRIBUTION: ${{ secrets.DISTRIBUTION_ID }}
-          PATHS: '/*'
+      # - name: Invalidate CloudFront
+      #   if: github.ref == 'refs/heads/master'
+      #   uses: chetan/invalidate-cloudfront-action@master
+      #   env:
+      #     DISTRIBUTION: ${{ secrets.DISTRIBUTION_ID }}
+      #     PATHS: '/*'
 
       - name: Create badges
         run: yarn run test:badges
@@ -80,8 +80,8 @@ jobs:
           branch: ${{ steps.vars.outputs.short_ref }}
           unprotect_reviews: true
 
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # - name: SonarQube Scan
+      #   uses: sonarsource/sonarqube-scan-action@master
+      #   env:
+      #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
