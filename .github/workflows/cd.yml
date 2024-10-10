@@ -1,9 +1,6 @@
 name: React Template CD
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   deploy:
@@ -80,8 +77,8 @@ jobs:
           branch: ${{ steps.vars.outputs.short_ref }}
           unprotect_reviews: true
 
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # - name: SonarQube Scan
+      #   uses: sonarsource/sonarqube-scan-action@master
+      #   env:
+      #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
